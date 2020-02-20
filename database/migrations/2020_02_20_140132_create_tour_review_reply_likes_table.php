@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserDonatesTable extends Migration
+class CreateTourReviewReplyLikesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateUserDonatesTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_donates', function (Blueprint $table) {
-            $table->bigIncrements('donate_id');
+        Schema::create('tour_review_reply_likes', function (Blueprint $table) {
+            $table->bigIncrements('review_reply_id');
+            $table->integer('review_id');
             $table->integer('user_id');
-            $table->integer('cash');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateUserDonatesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_donates');
+        Schema::dropIfExists('tour_review_reply_likes');
     }
 }
