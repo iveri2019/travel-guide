@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class UserTourBookmark extends Model
+class Slogan extends Model
 {
     //
     public function user()

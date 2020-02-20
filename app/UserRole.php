@@ -4,11 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class UserTourBookmark extends Model
+class UserRole extends Model
 {
     //
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->hasMany('App\User');
     }
 }
