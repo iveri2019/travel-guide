@@ -16,3 +16,6 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('get_first_frame','HomeController@get_first_frame');
+Route::post('get_first_frame','HomeController@get_first_frame');
