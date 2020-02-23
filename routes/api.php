@@ -19,3 +19,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('get_first_frame','HomeController@get_first_frame');
 Route::post('get_first_frame','HomeController@get_first_frame');
+// Route::put('get_first_frame','HomeController@get_first_frame');

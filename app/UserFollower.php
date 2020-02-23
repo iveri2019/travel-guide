@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class UserFollower extends Model
 {
     //
-    public function user()
-    {
-        return $this->belongsToMany('App\User');
-    }
+    // public function user()
+    // {
+    //     return $this->belongsToMany('App\User');
+    // }
 }

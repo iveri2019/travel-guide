@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class TourImages extends Model
 {
     //
-    public function tour(){
-        return $this->belongsTo('App\Tour');
-    }
+    // public function tour(){
+    //     return $this->belongsTo('App\Tour');
+    // }
 }

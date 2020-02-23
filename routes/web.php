@@ -17,4 +17,11 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'AuthController@index')->name('home');
+Route::get('/admin', 'AdminPageController@home')->name('adminHome');
+Route::get('/admin/profile','AdminPageController@profile')->name('adminProfile');
+Route::get('/admin/event','AdminPageController@tourPage')->name('tourPage');
+Route::post('/admin/add/picture','AdminPageController@uploadPhoto')->name('uploadPhoto');
+Route::post('/admin/event/create','AdminPageController@createEvent')->name('createEvent');
+Route::post('/admin/event/edit','AdminPageController@editEventPage')->name('editEventPage');
+Route::post('/admin/event/edit/accept','AdminPageController@editEvent')->name('editEvent');

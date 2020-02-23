@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class TourMembers extends Model
 {
     //
-    public function tour()
-    {
-        return $this->belongsToMany('App\Tour');
-    }
+    // public function tour()
+    // {
+    //     return $this->belongsToMany('App\Tour');
+    // }
 }
