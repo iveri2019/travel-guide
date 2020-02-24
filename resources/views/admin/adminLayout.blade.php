@@ -64,13 +64,12 @@
                     <li>
                         <a href="fontawesome.html" class="waves-effect"><i class="fa fa-font fa-fw" aria-hidden="true"></i><span class="hide-menu">Page Controller</span></a>
                     </li>
-               {{--      <li>
-                        <a href="map-google.html" class="waves-effect"><i class="fa fa-globe fa-fw" aria-hidden="true"></i><span class="hide-menu">Google Map</span></a>
-                    </li>
-                    <li>   
-                    
-                        <a href="404.html" class="waves-effect"><i class="fa fa-info-circle fa-fw" aria-hidden="true"></i><span class="hide-menu">Error 404</span></a>
+                    {{-- <li>
+                        <a href="map-google.html" class="waves-effect"><i class="fa fa-globe fa-fw" aria-hidden="true"></i><span class="hide-menu"></span></a>
                     </li> --}}
+                    <li>   
+                        <a href="{{ route('infoPage') }}" class="waves-effect"><i class="fa fa-info-circle fa-fw" aria-hidden="true"></i><span class="hide-menu">Info Controller</span></a>
+                    </li>
                     <li>
                     <form method="POST" action="{{ route('logout') }}" style="margin-left: 30%;margin-top: 5%;">
                             @csrf

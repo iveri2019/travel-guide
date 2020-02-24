@@ -14,7 +14,11 @@ class CreateLoggersTable extends Migration
     public function up()
     {
         Schema::create('loggers', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->bigIncrements('logger_id');
+            $table->integer('user_id');
+            $table->string('crud_type');
+            $table->string('info_was')->nullable();
+            $table->string('info_is')->nullable();
             $table->timestamps();
         });
     }

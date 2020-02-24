@@ -26,3 +26,5 @@ Route::post('/admin/event/create','AdminPageController@createEvent')->name('crea
 Route::post('/admin/event/edit','AdminPageController@editEventPage')->name('editEventPage');
 Route::post('/admin/event/edit/image','AdminPageController@editEventImage')->name('editEventImage');
 Route::delete('/admin/event/delete','AdminPageController@deleteEvent')->name('deleteEvent');
+
+Route::get('/admin/info','AdminPageController@infoPage')->name('infoPage');

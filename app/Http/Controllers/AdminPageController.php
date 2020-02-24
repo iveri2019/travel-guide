@@ -10,6 +10,7 @@ use redirect,input;
 use App\UserImage;
 use App\TourReviews;
 use App\TourImages;
+use App\Logger;
 use Illuminate\Http\Request;
 
 class AdminPageController extends Controller
@@ -17,7 +18,7 @@ class AdminPageController extends Controller
     public function __construct()
     {
     	$this->middleware('auth');
-    	$this->middleware('admincheck');
+    	$this->middleware('admin');
     }
     public function profile()
     {
@@ -46,16 +47,25 @@ class AdminPageController extends Controller
             'event_description' => 'required|string|max:255|min:20',
             // 'event_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
+        $checkIfExists = Tour::where('tour_name',$request->input('event_name'))->count();
+        if ($checkIfExists == 0) {
+            $createEvent = new Tour;
+            $createEvent->user_id = Auth::user()->id;
+            $createEvent->tour_name = $request->input('event_name');
+            $createEvent->tour_price = $request->input('event_price');
+            $createEvent->description = $request->input('event_description');
+            $createEvent->limited_member = $request->input('event_member_size');
+            $createEvent->save();
 
-        $createEvent = new Tour;
-        $createEvent->user_id = Auth::user()->id;
-        $createEvent->tour_name = $request->input('event_name');
-        $createEvent->tour_price = $request->input('event_price');
-        $createEvent->description = $request->input('event_description');
-        $createEvent->limited_member = $request->input('event_member_size');
-        $createEvent->save();
-
-
+                if ($createEvent) {
+                    $log = new Logger;
+                    $log->user_id = Auth::user()->id;
+                    $log->info_is = 'Event :'.$request->input('event_name')." - Price :".$request->input('event_price')." - Desc :".$request->input('event_description')." - Size :".$request->input('event_member_size');
+                    $log->info_was = "Exist";
+                    $log->crud_type = "create";
+                    $log->save();
+                }
+            }
         return redirect('admin/event');
     }
     public function editEventPage(Request $request)
@@ -90,7 +100,16 @@ class AdminPageController extends Controller
                         $image->user_id = Auth::user()->id;
                         if ($filePath) {
                             $image->save(); 
+                            if ($image) {
+                                $log = new Logger;
+                                $log->user_id = Auth::user()->id;
+                                $log->info_is = $filePath;
+                                $log->info_was = "Exist";
+                                $log->crud_type = "create";
+                                $log->save();
+                            }
                         } 
+                        
                 }
             }   
         return redirect('/admin/event',);
@@ -118,6 +137,14 @@ class AdminPageController extends Controller
                     $image->equiped = 1;
                     if ($filePath) {
                     	$image->save(); 
+                        if ($image) {
+                            $log = new Logger;
+                            $log->user_id = Auth::user()->id;
+                            $log->info_is = $filePath;
+                            $log->info_was = "Exist";
+                            $log->crud_type = "create";
+                            $log->save();
+                        }
                     } 
             }
         }
@@ -128,17 +155,31 @@ class AdminPageController extends Controller
     {
         $this->validate($request,['tour_id' => 'required|integer']);
 
-        
+        $first = Tour::where('tour_id',$request->input('tour_id'))->delete();
+
+                $log = new Logger;
+                $log->crud_type = "delete";
+                $log->info_was = "Event-id :".$request->input('tour_id');
+                $log->info_is = "empty";
+                $log->user_id = Auth::user()->id;
+                $log->save();
+
         foreach (TourImages::select('image_url')->where('tour_id',$request->input('tour_id'))->get() as $images) {
             $image_path = public_path($images->image_url);
 
             if (\File::exists($image_path)) {
-                \File::delete($image_path);
-                Tour::where('tour_id',$request->input('tour_id'))->delete();
-                TourImages::where('tour_id',$request->input('tour_id'))->delete();
+                $file = \File::delete($image_path);
+                $second = TourImages::where('tour_id',$request->input('tour_id'))->delete();     
             }
         }
+       
         
         return redirect('admin/event')->with('success','Successfully Deleted!');
+    }
+    public function infoPage()
+    {
+        $log = Logger::select('users.id as user_id','loggers.crud_type','loggers.info_was','loggers.info_is','loggers.created_at','users.name')->join('users','users.id','=','loggers.user_id')->get();
+
+        return view('admin.info',compact('log'));
     }
 }
