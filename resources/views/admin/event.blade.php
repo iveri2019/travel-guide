@@ -84,13 +84,14 @@
                                                 <td>{{$events->limited_member}}</td>
                                                 <td>{{$events->tour_price}}$</td>
                                                 <td>{{App\TourImages::where('tour_id',$events->tour_id)->count()}}</td>
-                                                {{-- <td>
-                                                    <form method="POST" action="">
-                                                        @csrf
-                                                        <input type="hidden" name="tour_id" value="{{$events->id}}">
-                                                        <button style="background: green;border:none;border-radius: 5px;" class="btn btn-danger">View</button>
-                                                    </form>
-                                                </td> --}}
+                                                @php
+                                                    $dt = new DateTime('Asia/Tbilisi');
+                                                @endphp
+                                                @if ($events->created_at->format('Y') == $dt->format('Y') && $events->created_at->format('m') == $dt->format('m') && $events->created_at->format('d') == $dt->format('d'))
+                                                    <td style="color:orange">NEW</td>
+                                                @else
+                                                    <td style="color:black;">{{$dt->format('d')-$events->created_at->format('d')}}Day ago</td>
+                                                @endif
                                                 <td>
                                                     <form method="POST" action="{{ route('editEventPage') }}">
                                                         @csrf

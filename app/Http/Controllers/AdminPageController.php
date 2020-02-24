@@ -178,8 +178,8 @@ class AdminPageController extends Controller
     }
     public function infoPage()
     {
-        $log = Logger::select('users.id as user_id','loggers.crud_type','loggers.info_was','loggers.info_is','loggers.created_at','users.name')->join('users','users.id','=','loggers.user_id')->get();
-
+       $log = Logger::select('users.id as user_id','loggers.crud_type','loggers.info_was','loggers.info_is','loggers.created_at','users.name')->join('users','users.id','=','loggers.user_id')->orderBy('loggers.created_at','desc')->get();
+       
         return view('admin.info',compact('log'));
     }
 }

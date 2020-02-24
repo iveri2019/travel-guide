@@ -44,13 +44,24 @@
                                             <th>Log creation date</th>
                                         </tr>
                                     </thead>
+                                    @php
+                                        $dt = new DateTime('Asia/Tbilisi');
+                                    @endphp
                                     @foreach ($log as $logs)
+                                    	
                                     	<tbody>
 	                                    	<td>{{ $logs->name }}</td>
 	                                    	<td>{{ $logs->crud_type }}</td>
 	                                    	<td>{{ $logs->info_was }}</td>
 	                                    	<td>{{ $logs->info_is }}</td>
+	                                    	@if ($logs->created_at->format('Y') == $dt->format('Y') && $logs->created_at->format('m') == $dt->format('m') && $logs->created_at->format('d') >= $dt->format('d'))
+                                                    <td style="color:orange">NEW</td>
 	                                    	<td>{{ $logs->created_at }}</td> 
+	                                    	@else
+                                                <td style="color:black;">{{$dt->format('d')-$logs->created_at->format('d')}}Day ago</td>
+                                            @endif
+                                            <h1>
+                                        </h1>
                                     	</tbody>
                                     @endforeach
                                 </table>
