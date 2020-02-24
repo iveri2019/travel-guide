@@ -17,7 +17,7 @@ class AdminPageController extends Controller
     public function __construct()
     {
     	$this->middleware('auth');
-    	// $this->middleware('admincheck');
+    	$this->middleware('admincheck');
     }
     public function profile()
     {

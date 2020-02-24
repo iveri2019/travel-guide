@@ -6,8 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" type="image/png" sizes="16x16" href="../plugins/images/favicon.png">
+    <meta name="author" content="Tor1k">
     <title>Admin Panel</title>
     <link href="{{ asset('bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
     <link rel="shortcut icon" type="image/png" href="{{ asset('image/favicon.png') }}"/>
@@ -18,8 +17,12 @@
     <link href="{{ asset('css/colors/blue-dark.css') }}" id="theme" rel="stylesheet">
 @yield('link')
 </head>
-
 <body>
+    <style type="text/css">
+        #lougout :hover{
+            border: solid 1px darkred;
+        }
+    </style>
         <div id="wrapper">
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top m-b-0">
@@ -64,11 +67,17 @@
                     <li>
                         <a href="map-google.html" class="waves-effect"><i class="fa fa-globe fa-fw" aria-hidden="true"></i><span class="hide-menu">Google Map</span></a>
                     </li>
-                    <li>
-                        <a href="blank.html" class="waves-effect"><i class="fa fa-columns fa-fw" aria-hidden="true"></i><span class="hide-menu">Blank Page</span></a>
+                    <li>   
+                    
+                        <a href="404.html" class="waves-effect"><i class="fa fa-info-circle fa-fw" aria-hidden="true"></i><span class="hide-menu">Error 404</span></a>
                     </li>
                     <li>
-                        <a href="404.html" class="waves-effect"><i class="fa fa-info-circle fa-fw" aria-hidden="true"></i><span class="hide-menu">Error 404</span></a>
+                    <form method="POST" action="{{ route('logout') }}" style="margin-left: 30%;margin-top: 5%;">
+                            @csrf
+                            <button class="btn btn-danger" id="lougout" style="background: none;border: none;margin: auto;">
+                                <span style="color:darkred" class="hide-menu">Logout</span>
+                            </button>
+                        </form>
                     </li>
                 </ul>
             </div>
