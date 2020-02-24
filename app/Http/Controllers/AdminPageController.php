@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Tour;
 use App\User;
+use Illuminate\Http\File;
+use Illuminate\Support\Facades\Storage;
 use Auth;
 use redirect,input;
 use App\UserImage;
@@ -67,31 +69,31 @@ class AdminPageController extends Controller
 
         return view('admin.adminEventEdit',compact('event','eventImages'));
     }
-    public function editEvent(Request $request)
+    public function editEventImage(Request $request)
     {
-       $this->validate($request,[
-            'event_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'tour_id' => 'required|integer'
-        ]);
-        
-        if($request->hasFile('event_image')) {
-            $image = time().'.'.$request->file('event_image')->getClientOriginalExtension();
-             $checkImageName = TourImages::where('image_url',$image)->count();
+            $this->validate($request,[
+                'event_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'tour_id' => 'required|integer'
+            ]);
 
-            if ($checkImageName == 0) {
-                    $filePath = $request->event_image->move('eventImages',$image);
-                    // $filePath = 'eventImages/'.$image;
+            if($request->hasFile('event_image')) {
+                $image = time().'.'.$request->file('event_image')->getClientOriginalExtension();
+                $checkImageName = TourImages::where('image_url',$image)->count();
 
-                    $image = new TourImages;
-                    $image->image_url = $filePath;
-                    $image->tour_id = $request->input('tour_id');
-                    $image->user_id = Auth::user()->id;
-                    if ($filePath) {
-                        $image->save(); 
-                    } 
-            }
-        }
-        return redirect('/admin/event');
+                if ($checkImageName == 0) {
+                        $request->event_image->move(public_path('eventImages'),$image);
+                        $filePath = 'eventImages/'.$image;
+
+                        $image = new TourImages;
+                        $image->image_url = $filePath;
+                        $image->tour_id = $request->input('tour_id');
+                        $image->user_id = Auth::user()->id;
+                        if ($filePath) {
+                            $image->save(); 
+                        } 
+                }
+            }   
+        return redirect('/admin/event',);
     }
     public function uploadPhoto(Request $request)
     {
@@ -121,5 +123,22 @@ class AdminPageController extends Controller
         }
 
         return redirect('/admin/profile');
+    }
+    public function deleteEvent(Request $request)
+    {
+        $this->validate($request,['tour_id' => 'required|integer']);
+
+        
+        foreach (TourImages::select('image_url')->where('tour_id',$request->input('tour_id'))->get() as $images) {
+            $image_path = public_path($images->image_url);
+
+            if (\File::exists($image_path)) {
+                \File::delete($image_path);
+                Tour::where('tour_id',$request->input('tour_id'))->delete();
+                TourImages::where('tour_id',$request->input('tour_id'))->delete();
+            }
+        }
+        
+        return redirect('admin/event')->with('success','Successfully Deleted!');
     }
 }

@@ -1,6 +1,18 @@
 @extends('admin.adminLayout')
 
 @section('main')
+<style>
+#grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto auto;
+  padding: 10px;
+}
+#grid-item {
+  padding: 20px;
+  font-size: 30px;
+  text-align: center;
+}
+</style>
 	@foreach ($event as $events)
 	<div id="page-wrapper">
 	            <div class="container-fluid">
@@ -20,22 +32,24 @@
 	                    <div class="col-sm-12">
 	                        <div class="white-box" >
 	                        	 <h3 class="box-title">Upload Photo</h3>
-								<form  method="POST" action="{{ route('editEvent') }}" enctype="multipart/form-data">
-									@csrf
-									<input type="hidden" name="tour_id" value="{{$events->tour_id}}">
-									<input type="file" name="image_upload" required="required">
-									<button style="background: orange;" class="btn btn-primary">Accept Edit</button>
-								</form>
+	                        	@if (\Auth::check())
+									<form  method="POST" action="{{ route('editEventImage') }}"  enctype="multipart/form-data">
+										@csrf
+										<input type="hidden" name="tour_id" value="{{$events->tour_id}}">
+										<input type="file" name="event_image" required="required">
+										<button style="background: orange;" class="btn btn-primary">Accept Edit</button>
+									</form>
+								@endif
 	                        </div>
 	                        <div class="white-box" >
 	                        	 <h3 class="box-title">Uploaded Photos ({{$eventImages->count()}})</h3>
-	                        	<ul>
+	                        	<div id="grid-container">
 									@foreach ($eventImages as $eventImage)
-										<li>
-											<img src="{{$eventImage->image_url}}">
-										</li>
+										<div class="grid-item">
+											<img height="100" src="{{ asset($eventImage->image_url) }}">
+										</div>
 									@endforeach
-								</ul>
+								</div>
 	                        </div>
 	                        <div class="white-box">
 	                        	<div class="table-responsive">

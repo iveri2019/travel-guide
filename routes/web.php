@@ -24,4 +24,5 @@ Route::get('/admin/event','AdminPageController@tourPage')->name('tourPage');
 Route::post('/admin/add/picture','AdminPageController@uploadPhoto')->name('uploadPhoto');
 Route::post('/admin/event/create','AdminPageController@createEvent')->name('createEvent');
 Route::post('/admin/event/edit','AdminPageController@editEventPage')->name('editEventPage');
-Route::post('/admin/event/edit/accept','AdminPageController@editEvent')->name('editEvent');
+Route::post('/admin/event/edit/image','AdminPageController@editEventImage')->name('editEventImage');
+Route::delete('/admin/event/delete','AdminPageController@deleteEvent')->name('deleteEvent');

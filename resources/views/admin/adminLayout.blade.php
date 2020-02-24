@@ -35,7 +35,7 @@
                 <ul class="nav navbar-top-links navbar-right pull-right">
                     <li>
                         @if (App\UserImage::where('user_id',\auth::user()->id)->where('equiped',1)->count() > 0)
-                        <a class="profile-pic" href="#">
+                        <a class="profile-pic" href="{{ route('adminProfile') }}">
                         @foreach (App\UserImage::where('user_id',\auth::user()->id)->where('equiped',1)->get() as $image)
                          <img  src="{{ asset($image->image_url) }}" alt="user-img" width="36" class="img-circle">
                         @endforeach

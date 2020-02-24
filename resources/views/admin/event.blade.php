@@ -57,7 +57,6 @@
                     <div class="col-sm-12">
                         <div class="white-box" >
                             <h3 class="box-title">Event List</h3>
-                            <p class="text-muted">Add class <code>.event</code></p>
                             <div>
                         <form role="search" action="" method="POST"  class="app-search hidden-xs">
                             <input type="text" style="width: 100%;background: lightgrey;" placeholder="Search..." class="form-control">
@@ -72,6 +71,7 @@
                                             <th>Description</th>
                                             <th>Member Size</th>
                                             <th>Price Per-Person</th>
+                                            <th>Images</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -83,25 +83,27 @@
                                                 <td>{{$events->description}}</td>
                                                 <td>{{$events->limited_member}}</td>
                                                 <td>{{$events->tour_price}}$</td>
-                                                <td>
+                                                <td>{{App\TourImages::where('tour_id',$events->tour_id)->count()}}</td>
+                                                {{-- <td>
                                                     <form method="POST" action="">
                                                         @csrf
                                                         <input type="hidden" name="tour_id" value="{{$events->id}}">
                                                         <button style="background: green;border:none;border-radius: 5px;" class="btn btn-danger">View</button>
                                                     </form>
-                                                </td>
+                                                </td> --}}
                                                 <td>
                                                     <form method="POST" action="{{ route('editEventPage') }}">
                                                         @csrf
                                                         <input type="hidden" name="tour_id" value="{{$events->tour_id}}">
-                                                        <button style="background: orange;border:none;border-radius: 5px;" class="btn btn-warning">Edit</button>
+                                                        <button style="background: orange;border:none;border-radius: 5px;" class="btn btn-warning">Edit/View</button>
                                                     </form>
                                                 </td>
                                                 <td>
-                                                    <form method="POST" action="">
+                                                    <form method="POST" action="{{ route('deleteEvent') }}">
                                                         @csrf
-                                                        <input type="hidden" name="tour_id" value="{{$events->id}}">
-                                                        <button id="delete" style="background: darkred;border:none;border-radius: 5px;" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                                                        @method('delete')
+                                                        <input type="hidden" name="tour_id" value="{{$events->tour_id}}">
+                                                        <button id="delete" style="background: darkred;border:none;border-radius: 5px;" class="btn btn-danger" onclick="return confirm('Are you sure? Event images will be destroyed!')">Delete</button>
                                                     </form>
                                                 </td>
                                             </tr>
